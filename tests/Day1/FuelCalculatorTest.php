@@ -20,6 +20,12 @@ class FuelCalculatorTest extends TestCase
         $this->assertSame($expected, $this->fuelCalculator->calculateForMass($mass));
     }
 
+    /** @dataProvider accumulativeMasses */
+    public function testCalculateForAccumulativeMass(int $expected, int $mass): void
+    {
+        $this->assertSame($expected, $this->fuelCalculator->calculateForAccumulativeMass($mass));
+    }
+
     public function masses(): array
     {
         return [
@@ -27,6 +33,15 @@ class FuelCalculatorTest extends TestCase
             [2, 14],
             [654, 1969],
             [33583, 100756],
+        ];
+    }
+
+    public function accumulativeMasses(): array
+    {
+        return [
+            [2, 14],
+            [966, 1969],
+            [50346, 100756],
         ];
     }
 }

@@ -10,5 +10,9 @@ preg_match_all('/(?<masses>.+)/', $contents, $matches);
 [$masses] = $matches;
 
 echo array_sum(array_map(static function ($mass) use ($container) {
-    return $container->get(FuelCalculator::class)->calculateForMass($mass);
-}, $masses)) . PHP_EOL;
+        return $container->get(FuelCalculator::class)->calculateForMass($mass);
+    }, $masses)) . PHP_EOL;
+
+echo array_sum(array_map(static function ($mass) use ($container) {
+        return $container->get(FuelCalculator::class)->calculateForAccumulativeMass($mass);
+    }, $masses)) . PHP_EOL;
