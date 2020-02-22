@@ -1,6 +1,7 @@
 <?php
 
 use App\Day1\FuelCalculator;
+use App\Day2\IntCode;
 use League\Container\Argument\RawArgument;
 use League\Container\Container;
 use League\Flysystem\Adapter\Local;
@@ -17,5 +18,10 @@ $container->add(Filesystem::class)->addArgument(Local::class);
 // --------------------------------- DAY 1 -------------------------------------
 // -----------------------------------------------------------------------------
 $container->add(FuelCalculator::class);
+
+// -----------------------------------------------------------------------------
+// --------------------------------- DAY 2 -------------------------------------
+// -----------------------------------------------------------------------------
+$container->add(IntCode::class);
 
 return $container;
