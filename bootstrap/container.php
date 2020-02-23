@@ -2,6 +2,7 @@
 
 use App\Day1\FuelCalculator;
 use App\Day2\IntCode;
+use App\Day3\Circuit;
 use League\Container\Argument\RawArgument;
 use League\Container\Container;
 use League\Flysystem\Adapter\Local;
@@ -23,5 +24,10 @@ $container->add(FuelCalculator::class);
 // --------------------------------- DAY 2 -------------------------------------
 // -----------------------------------------------------------------------------
 $container->add(IntCode::class);
+
+// -----------------------------------------------------------------------------
+// --------------------------------- DAY 3 -------------------------------------
+// -----------------------------------------------------------------------------
+$container->add(Circuit::class);
 
 return $container;
