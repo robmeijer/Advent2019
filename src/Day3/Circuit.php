@@ -6,20 +6,12 @@ class Circuit
 {
     public function calculateDistance(string $first, string $second): int
     {
-        return min(
-            array_map(
-                static function ($cross) {
-                    return array_sum(array_map('abs', $cross));
-                },
-                array_map(
-                    'unserialize',
-                    array_intersect(
-                        array_map('serialize', $this->plotWire($first)),
-                        array_map('serialize', $this->plotWire($second))
-                    )
-                )
-            )
-        );
+        return min(array_map(static function ($cross) {
+            return array_sum(array_map('abs', $cross));
+        }, array_map('unserialize', array_intersect(
+            array_map('serialize', $this->plotWire($first)),
+            array_map('serialize', $this->plotWire($second))
+        ))));
     }
 
     private function plotWire(string $wire): array
