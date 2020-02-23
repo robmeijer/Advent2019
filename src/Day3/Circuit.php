@@ -4,70 +4,57 @@ namespace App\Day3;
 
 class Circuit
 {
-    private array $wires;
-
-    public function __construct(array $wires = [])
+    public function calculateDistance(string $first, string $second): int
     {
-        $this->wires = $wires;
+        return min(
+            array_map(
+                static function ($cross) {
+                    return array_sum(array_map('abs', $cross));
+                },
+                array_map(
+                    'unserialize',
+                    array_intersect(
+                        array_map('serialize', $this->plotWire($first)),
+                        array_map('serialize', $this->plotWire($second))
+                    )
+                )
+            )
+        );
     }
 
-    public function addWire(string $wire): void
+    private function plotWire(string $wire): array
     {
-        $this->wires[] = $wire;
-    }
+        $wirePositions = [];
+        $currentPosition = [0, 0];
 
-    public function calculateDistance(): int
-    {
-        $wirePositions = [[],[]];
-        foreach ($this->wires as $id => $wire) {
-            $currentPosition = [0, 0];
-            $wireData = explode(',', $wire);
-            foreach ($wireData as $instruction) {
-                preg_match('/(?<direction>[URDL])(?<distance>\d+)/', $instruction, $matches);
-                switch ($matches['direction']) {
-                    case 'U':
-                        for ($i = 1; $i <= $matches['distance']; $i++) {
-                            ++$currentPosition[1];
-                            $wirePositions[$id][] = $currentPosition;
-                        }
-                        break;
-                    case 'R':
-                        for ($i = 1; $i <= $matches['distance']; $i++) {
-                            ++$currentPosition[0];
-                            $wirePositions[$id][] = $currentPosition;
-                        }
-                        break;
-                    case 'D':
-                        for ($i = 1; $i <= $matches['distance']; $i++) {
-                            --$currentPosition[1];
-                            $wirePositions[$id][] = $currentPosition;
-                        }
-                        break;
-                    case 'L':
-                        for ($i = 1; $i <= $matches['distance']; $i++) {
-                            --$currentPosition[0];
-                            $wirePositions[$id][] = $currentPosition;
-                        }
-                        break;
-                }
+        foreach (explode(',', $wire) as $instruction) {
+            preg_match('/(?<direction>[URDL])(?<distance>\d+)/', $instruction, $matches);
+            for ($i = 1; $i <= $matches['distance']; $i++) {
+                $currentPosition = $this->adjustPosition($currentPosition, $matches['direction']);
+                $wirePositions[] = $currentPosition;
             }
         }
 
-        $distances = [];
+        return $wirePositions;
+    }
 
-        foreach ($wirePositions[0] as $wirePosition) {
-            if (in_array($wirePosition, $wirePositions[1], true)) {
-                foreach ($wirePosition as &$position) {
-                    $position = abs($position);
-                }
-                unset($position);
-
-                $distances[] = array_sum($wirePosition);
-            }
+    private function adjustPosition(array $currentPosition, string $direction): array
+    {
+        switch ($direction) {
+            case 'U':
+                ++$currentPosition[1];
+                break;
+            case 'R':
+                ++$currentPosition[0];
+                break;
+            case 'D':
+                --$currentPosition[1];
+                break;
+            case 'L':
+                --$currentPosition[0];
+                break;
         }
 
-        sort($distances);
-
-        return $distances[0];
+        return $currentPosition;
     }
 }

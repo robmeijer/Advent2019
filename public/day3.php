@@ -11,10 +11,6 @@ $contents = $container->get(Filesystem::class)->read('day3.txt');
 preg_match_all('/(?<wires>.+)/', $contents, $matches);
 [$wires] = $matches;
 
-$circuit = $container->get(Circuit::class);
+[$firstWire, $secondWire] = $wires;
 
-foreach ($wires as $wire) {
-    $circuit->addWire($wire);
-}
-
-echo $circuit->calculateDistance() . PHP_EOL;
+echo $container->get(Circuit::class)->calculateDistance($firstWire, $secondWire) . PHP_EOL;
