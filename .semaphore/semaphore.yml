@@ -1,0 +1,22 @@
+version: v1.0
+name: Test MyApp
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Install dependencies
+    task:
+      jobs:
+        - name: Composer install
+          commands:
+            - checkout
+            - cache restore
+            - composer install
+            - cache store
+  - name: Tests
+    task:
+      jobs:
+        - name: PHPUnit
+          commands:
+            - ./vendor/bin/phpunit
