@@ -41,3 +41,9 @@ jobs:
 
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit
+
+workflows:
+  version: 2
+  CI:
+    jobs:
+      - build
